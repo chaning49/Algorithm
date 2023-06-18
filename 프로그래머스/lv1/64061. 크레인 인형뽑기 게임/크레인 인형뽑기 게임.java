@@ -26,6 +26,7 @@ class Solution {
                         stack.push(board[j][i - 1]);
                     // 스택에 push가 되었든, pop이 되었든 board에서 꺼낸 값이므로 해당 위치의 값을 0으로 변경해준다.
                     board[j][i - 1] = 0;
+                    // 값이 나왔다면 다음 move로 옮겨가야 하기 때문에 중단
                     break;
                 }
             }
