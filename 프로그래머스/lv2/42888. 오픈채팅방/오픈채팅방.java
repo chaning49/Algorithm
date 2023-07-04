@@ -10,8 +10,8 @@ class Solution {
         
         // map을 선언해서 user 정보 저장
         Map<String, String> users = new HashMap<>();
-        for (int i = 0; i < record.length; i++) {
-            String[] temp = record[i].split(" ");
+        for (String r : record) {
+            String[] temp = r.split(" ");
             switch (temp[0]) {
                 case "Enter":
                     ansList.add(temp[0] + " " + temp[1]);
