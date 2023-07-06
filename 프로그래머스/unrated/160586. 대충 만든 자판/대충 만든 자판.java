@@ -23,14 +23,11 @@ class Solution {
             char[] targetArr = targets[i].toCharArray();
             for (char t : targetArr) {
                 if (!alpha.containsKey(t)) {
-                    answer[i] = 0;
+                    answer[i] = -1;
                     break;
                 } else {
                     answer[i] += alpha.get(t);
                 }
-            }
-            if (answer[i] == 0) {
-                answer[i] = -1;
             }
         }
             
