@@ -1,29 +1,9 @@
 import java.util.*;
 
 class Solution {
-    public class Answer {
-        String title;
-        int time;
-        int order;
-        
-        public Answer(String title, int time, int order) {
-            this.title = title;
-            this.time = time;
-            this.order = order;
-        }
-        
-        public String getTitle() {
-            return title;
-        }
-    }
-    
     public String solution(String m, String[] musicinfos) {
-        String answer = "";
-        
-        // 정답 후보를 저장할 ansList와 순서를 저장할 cnt 선언
-        List<Answer> ansList = new ArrayList<>();
-        int cnt = 1;
-        int maxTime = -1;
+        String answer = "(None)";
+        int time = 0;
         
         // m에서 #을 빼준다.
         String melody = changeMelody(m);
@@ -32,40 +12,25 @@ class Solution {
         for (String musicinfo : musicinfos) {
             String[] mInfo = musicinfo.split(",");
             int minutes = makeMinute(mInfo[0], mInfo[1]);
-            String title = mInfo[2];
-            String infoMelody = changeMelody(mInfo[3]);
             
-            // 시간만큼 문자열을 이어붙여준다.
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < minutes / infoMelody.length(); i++) {
-                sb.append(infoMelody);
-            }
-            sb.append(infoMelody.substring(0, minutes % infoMelody.length()));
+            // 이전보다 시간이 긴 경우에만 실행하면 길이는 최대가 된다. 또한 순차적으로 실행되기 때문에 시간이 같아도 순서를 자연스럽게 반영할 수 있다.
+            if (minutes > time) {
+                String title = mInfo[2];
+                String infoMelody = changeMelody(mInfo[3]);
             
-            // 이어붙인 문자열에서 m이 있다면 정답 목록에 추가
-            if (sb.toString().contains(melody)) {
-                Answer ans = new Answer(title, minutes, cnt);
-                ansList.add(ans);
-                maxTime = Math.max(maxTime, minutes);
-                cnt++;
-            }
-        }
-        
-        if (ansList.size() == 0) {
-            answer = "(None)";
-        } else if (ansList.size() == 1) {
-            answer = ansList.get(0).getTitle();
-        } else if (ansList.size() > 1) {
-            Collections.sort(ansList, new Comparator<Answer>() {
-                @Override
-                public int compare(Answer a1, Answer a2) {
-                    if (a1.time - a2.time == 0) {
-                        return a1.order - a2.order;
-                    }
-                    return a2.time - a1.time;
+                // 시간만큼 문자열을 이어붙여준다.
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < minutes / infoMelody.length(); i++) {
+                    sb.append(infoMelody);
                 }
-            });
-            answer = ansList.get(0).getTitle();
+                sb.append(infoMelody.substring(0, minutes % infoMelody.length()));
+            
+                // 이어붙인 문자열에서 m이 있다면 정답 목록에 추가
+                if (sb.toString().contains(melody)) {
+                    answer = title;
+                    time = minutes;
+                }
+            }
         }
         
         return answer;
