@@ -90,20 +90,4 @@ class Solution {
         int min = Integer.parseInt(strTime.substring(3));
         return hour * 60 + min;
     }
-    
-    // ansList에서 maxTime이 여러개이면 false, 하나이면 true를 반환한다.
-    private boolean isOnlyMax(List<Answer> ansList, int maxTime) {
-        int cnt = 0;
-        for (Answer a : ansList) {
-            if (a.time == maxTime) {
-                cnt++;
-            }
-            
-            if (cnt > 1) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
 }
