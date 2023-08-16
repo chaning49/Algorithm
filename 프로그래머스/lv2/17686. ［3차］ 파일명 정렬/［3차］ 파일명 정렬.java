@@ -1,24 +1,19 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
+// 리팩토링 코드
 class Solution {
-    public class File {
+    public static class File {
         private String head;
         private int number;
         private String tail;
         private int index;
         
-        public File(String head, int number, String tail) {
+        public File(String head, int number, String tail, int index) {
             this.head = head;
             this.number = number;
             this.tail = tail;
-        }
-        
-        public File() {
-            this.head = "";
-            this.number = 0;
-            this.tail = "";
-            this.index = 0;
+            this.index = index;
         }
         
         private String getHead() {
@@ -28,66 +23,49 @@ class Solution {
         private int getNumber() {
             return this.number;
         }
+        
+        public int getIndex() {
+            return this.index;
+        }
     }
     
     public String[] solution(String[] files) {
-        String[] answer = new String[files.length];
-        List<File> divisionFiles = new ArrayList<>(files.length);
-        for (int i = 0; i < files.length; i++) {
-            String file = files[i];
-            divisionFiles.add(makeDivisionFile(file.toLowerCase(), i));
-        }
-        
-        // head와 number 순서대로 정렬
-        List<File> answerFiles = divisionFiles.stream()
-            .sorted(Comparator.comparing(File::getHead)
-                   .thenComparing(File::getNumber))
-            .collect(Collectors.toList());
+        List<File> divisionFiles = new ArrayList<>();
         
         for (int i = 0; i < files.length; i++) {
-            int idx = answerFiles.get(i).index;
-            answer[i] = files[idx];
+            divisionFiles.add(makeDivisionFile(files[i], i));
         }
         
-        return answer;
+        // head와 number 순서대로 정렬 후 index 순으로 정렬하면 원래의 입력순서까지 체크해줄 수 있다.
+        divisionFiles.sort(Comparator.comparing(File::getHead)
+                                      .thenComparing(File::getNumber)
+                                      .thenComparing(File::getIndex));
+        
+        return divisionFiles.stream()
+                            .map(file -> files[file.getIndex()])
+                            .toArray(String[]::new);
     }
     
     private File makeDivisionFile(String file, int i) {
-        File f = new File();
+        // 소문자로 문자열 한 번에 변경
+        String lowerFile = file.toLowerCase();
         
-        int idx = 0;
-        String num = "";
-        boolean isNumPart = false;
-        
-        for (char c : file.toCharArray()) {
-            // 숫자이고 num의 길이가 5 미만이면 num에 합쳐주기
-            if (Character.isDigit(c)) {
-                if (num.length() < 5) {
-                    num += c;
-                }
-                isNumPart = true;
-            } else {
-                if (!isNumPart) {
-                    f.head += c;
-                } else {
-                    f.number = Integer.parseInt(num);
-                    f.tail = file.substring(idx);
-                    f.index = i;
-                    break;
-                }
-            }
-            idx++;
+        // head의 인덱스 저장
+        int headEnd = 0;
+        while (headEnd < file.length() && !Character.isDigit(lowerFile.charAt(headEnd))) {
+            headEnd++;
         }
         
-        // 숫자 파트 후에 문자가 없는 경우 (tail이 없는 경우)
-        if (f.tail.isEmpty() && !num.isEmpty()) {
-            f.number = Integer.parseInt(num);
-            f.index = i;
+        // number의 인덱스 저장
+        int numberEnd = headEnd;
+        while (numberEnd < file.length() && Character.isDigit(lowerFile.charAt(numberEnd)) && numberEnd - headEnd < 5) {
+            numberEnd++;
         }
 
-        // head 부분을 대소문자 구분 없이 정렬하기 위해
-        f.head = f.head.toLowerCase();
-        
-        return f;
+        String head = lowerFile.substring(0, headEnd);
+        int number = Integer.parseInt(file.substring(headEnd, numberEnd));
+        String tail = file.substring(numberEnd);
+
+        return new File(head, number, tail, i);
     }
 }
