@@ -32,6 +32,7 @@ class Solution {
             int prevX = x;
             int prevY = y;
             
+            // route 내의 이동 칸 만큼만 움직이므로 중간에 break 해준다.
             for (int d = 0; d < distance; d++) {
                 int nx = x + dx[idx];
                 int ny = y + dy[idx];
