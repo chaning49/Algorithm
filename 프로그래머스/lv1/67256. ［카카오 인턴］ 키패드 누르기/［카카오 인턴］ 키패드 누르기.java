@@ -1,113 +1,61 @@
 class Solution {
+    // 2D 좌표로 키패드를 표현
+    private int[][] keypad = {{3, 1}, {0, 0}, {0, 1}, {0, 2},
+                              {1, 0}, {1, 1}, {1, 2},
+                              {2, 0}, {2, 1}, {2, 2},
+                              {3, 0}, {3, 2}};
+
     public String solution(int[] numbers, String hand) {
-        String answer = "";
-        
+        StringBuilder answer = new StringBuilder();
         // 왼손과 오른손의 현재 위치 체크
-        String leftThumb = "*";
-        String rightThumb = "#";
-        
-        // numbers를 하나씩 순회하면서 왼손, 오른손을 체크한다.
+        int leftThumb = 10; // '*'에 해당하는 위치
+        int rightThumb = 11; // '#'에 해당하는 위치
+
         for (int number : numbers) {
             switch (number) {
                 case 1:
                 case 4:
                 case 7:
-                    answer += "L";
-                    leftThumb = Integer.toString(number);
+                    answer.append("L");
+                    leftThumb = number;
                     break;
                 case 3:
                 case 6:
                 case 9:
-                    answer += "R";
-                    rightThumb = Integer.toString(number);
+                    answer.append("R");
+                    rightThumb = number;
                     break;
                 default: // 2, 5, 8, 0
-                    String direction = checkCloseThumb(leftThumb, rightThumb, number, hand);
-                    if (direction.equals("L")) {
-                        answer += "L";
-                        leftThumb = Integer.toString(number);
+                    if (checkCloseThumb(leftThumb, rightThumb, number, hand)) {
+                        answer.append("L");
+                        leftThumb = number;
                     } else {
-                        answer += "R";
-                        rightThumb = Integer.toString(number);
+                        answer.append("R");
+                        rightThumb = number;
                     }
                     break;
             }
         }
-        
-        return answer;
+
+        return answer.toString();
     }
-    
-    // 왼쪽 엄지와 오른쪽 엄지 중 가까운 곳을 찾아서 "L" 또는 "R" 반환
-    private String checkCloseThumb(String leftThumb, String rightThumb, int number, String hand) {
+
+    // 왼쪽 엄지가 더 가까우면 true, 아니면 false 반환
+    private boolean checkCloseThumb(int leftThumb, int rightThumb, int number, String hand) {
         int leftDistance = distanceOfThumb(leftThumb, number);
         int rightDistance = distanceOfThumb(rightThumb, number);
-        
+
         if (leftDistance > rightDistance) {
-            return "R";
+            return false;
         } else if (leftDistance < rightDistance) {
-            return "L";
+            return true;
         } else {
-            return hand.equals("left") ? "L" : "R";
+            return hand.equals("left");
         }
     }
-    
+
     // 현재 엄지의 위치와 number의 거리를 반환
-    private int distanceOfThumb(String thumb, int number) {
-        int distance = 0;
-        switch (thumb) {
-            case "1":
-            case "2":
-            case "3":
-                if (number == 2) {
-                    distance = thumb.equals("2") ? 0 : 1;
-                } else if (number == 5) {
-                    distance = thumb.equals("2") ? 1 : 2;
-                } else if (number == 8) {
-                    distance = thumb.equals("2") ? 2 : 3;
-                } else {
-                    distance = thumb.equals("2") ? 3 : 4;
-                }
-                break;
-            case "4":
-            case "5":
-            case "6":
-                if (number == 2) {
-                    distance = thumb.equals("5") ? 1 : 2;
-                } else if (number == 5) {
-                    distance = thumb.equals("5") ? 0 : 1;
-                } else if (number == 8) {
-                    distance = thumb.equals("5") ? 1 : 2;
-                } else {
-                    distance = thumb.equals("5") ? 2 : 3;
-                }
-                break;
-            case "7":
-            case "8":
-            case "9":
-                if (number == 2) {
-                    distance = thumb.equals("8") ? 2 : 3;
-                } else if (number == 5) {
-                    distance = thumb.equals("8") ? 1 : 2;
-                } else if (number == 8) {
-                    distance = thumb.equals("8") ? 0 : 1;
-                } else {
-                    distance = thumb.equals("8") ? 1 : 2;
-                }
-                break;
-            case "*":
-            case "0":
-            case "#":
-                if (number == 2) {
-                    distance = thumb.equals("0") ? 3 : 4;
-                } else if (number == 5) {
-                    distance = thumb.equals("0") ? 2 : 3;
-                } else if (number == 8) {
-                    distance = thumb.equals("0") ? 1 : 2;
-                } else {
-                    distance = thumb.equals("0") ? 0 : 1;
-                }
-                break;
-        }
-        return distance;
+    private int distanceOfThumb(int thumb, int number) {
+        return Math.abs(keypad[thumb][0] - keypad[number][0]) + Math.abs(keypad[thumb][1] - keypad[number][1]);
     }
 }
