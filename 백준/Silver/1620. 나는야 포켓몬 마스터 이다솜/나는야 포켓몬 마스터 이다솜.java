@@ -45,6 +45,11 @@ public class Main {
 
     // 문자열이 숫자인지 확인
     private static boolean isNumeric(String str) {
-        return str.chars().allMatch(Character::isDigit);
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
