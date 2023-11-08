@@ -24,14 +24,17 @@ public class Main {
             inArr[in]++;
             outArr[out]++;
         }
-
+        
         int ans = 0;
         for (int i = 1; i < 101; i++) {
+            // 입차, 출차가 없으면 이전 값을 그대로 가져온다.
             if (inArr[i] == 0 && outArr[i] == 0) {
                 truck[i] = truck[i - 1];
-            } else {
+            } else { // 하나라도 입차, 출차가 있으면 입차는 더하고, 출차는 빼준다.
                 truck[i] = truck[i - 1] + inArr[i] - outArr[i];
             }
+            
+            // 트럭 수에 따른 요금 계산 
             switch (truck[i]) {
                 case 1:
                     ans += a;
@@ -44,6 +47,7 @@ public class Main {
                     break;
             }
         }
+        
         System.out.println(ans);
     }
 }
