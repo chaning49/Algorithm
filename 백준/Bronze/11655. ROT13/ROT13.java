@@ -9,6 +9,7 @@ public class Main {
         * ROT13: 알파벳 대소문자를 13글자씩 밀어서 만든다.
         * 입력: 알파벳 대문자, 소문자, 공백, 숫자, 길이는 1 ~ 100
         * 출력: ROT13이 적용된 문자열
+        * A: 65, a: 97을 외우면 편해진다!
         * */
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String s = br.readLine();
