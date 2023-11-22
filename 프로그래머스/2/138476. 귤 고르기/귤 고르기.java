@@ -5,17 +5,17 @@ class Solution {
         int answer = 0;
         
         // Map에 귤의 크기, 개수를 저장
-        Map<Integer, Long> gyul = new HashMap<>();
+        Map<Integer, Integer> gyul = new HashMap<>();
         for (int t : tangerine) {
             if (!gyul.containsKey(t)) {
-                gyul.put(t, 1L);
+                gyul.put(t, 1);
             } else {
-                gyul.put(t, gyul.get(t) + 1L);
+                gyul.put(t, gyul.get(t) + 1);
             }
         }
         
         // 귤의 개수만을 저장 후 sort
-        long[] sortedTan = new long[gyul.size()];
+        int[] sortedTan = new int[gyul.size()];
         int i = 0;
         for (int g : gyul.keySet()) {
             sortedTan[i] = gyul.get(g);
