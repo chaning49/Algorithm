@@ -26,8 +26,7 @@ class Solution {
         // 가장 개수가 많은 귤을 기준으로 k개를 없앨 수 있도록 제거
         i = sortedTan.length - 1;
         while (k > 0) {
-            k -= sortedTan[i];
-            i--;
+            k -= sortedTan[i--];
             answer++;
         }
         
