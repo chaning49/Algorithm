@@ -16,7 +16,7 @@ class Solution {
         while(!pq.isEmpty()){
             int cur = pq.poll();
 
-            if(sum < k){
+            if(sum <= k){
                 sum += cur;
                 cnt++;
             }
