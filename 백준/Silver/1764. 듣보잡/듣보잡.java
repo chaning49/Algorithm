@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -23,29 +20,25 @@ public class Main {
 
         // Map을 선언, 이름과 듣거나 본 횟수를 저장
         Map<String, Integer> map = new HashMap<>();
+        List<String> names = new ArrayList<>();
+
+        int cnt = 0;
         for (int i = 0; i < n + m; i++) {
             String str = br.readLine();
             map.put(str, map.getOrDefault(str, 0) + 1);
-        }
-
-        // map에서 듣보잡의 수와 이름을 사전순으로 저장해야 한다.
-        StringBuilder sb = new StringBuilder();
-        int cnt = 0;
-        for (String key : map.keySet()) {
-            if (map.get(key) > 1) {
+            if (map.get(str) > 1) { // value가 1 초과이면 듣보잡
                 cnt++;
-                sb.append(key).append(" ");
+                names.add(str);
             }
         }
 
-        // 정렬을 위해 배열에 삽입 후 출력
-        String[] arr = sb.toString().split(" ");
-        Arrays.sort(arr);
+        // 듣보잡의 수와 이름을 사전순으로 저장
+        Collections.sort(names);
 
-        sb = new StringBuilder();
-
+        // 출력
+        StringBuilder sb = new StringBuilder();
         sb.append(cnt).append("\n");
-        for (String a : arr) {
+        for (String a : names) {
             sb.append(a).append("\n");
         }
 
