@@ -7,7 +7,6 @@ public class Main {
     static boolean[][] visited;
     static int[] dx = {0, 1, 0, -1};
     static int[] dy = {-1, 0, 1, 0};
-    static int num = 0;
     static int size;
 
     public static void main(String[] args) throws IOException {
@@ -45,7 +44,6 @@ public class Main {
                 size = 0;
                 if (!visited[i][j] && paper[i][j] == 0) {
                     dfs(i, j);
-                    num++;
                     list.add(size);
                 }
             }
@@ -53,7 +51,7 @@ public class Main {
 
         Collections.sort(list);
         StringBuilder sb = new StringBuilder();
-        sb.append(num).append("\n");
+        sb.append(list.size()).append("\n");
         for (int l : list) {
             sb.append(l).append(" ");
         }
