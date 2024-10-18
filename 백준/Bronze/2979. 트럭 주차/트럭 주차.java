@@ -1,38 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        // 시간 별 주차된 차량의 수를 저장할 배열 선언
+        int[] times = new int[101];
+        int ans = 0;
+
+        // 입력 받기, 끝 시간에는 나가는 시간이므로 제외해줘야 한다.
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] inputs = br.readLine().split(" ");
-        int a = Integer.parseInt(inputs[0]);
-        int b = Integer.parseInt(inputs[1]);
-        int c = Integer.parseInt(inputs[2]);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int a = Integer.parseInt(st.nextToken());
+        int b = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
 
-        // 시간은 1부터 100
-        int[] cnt = new int[101];
-
-        // 입차가 일어난 시간을 기록해준다.
+        int min = 101;
+        int max = 0;
         for (int i = 0; i < 3; i++) {
-            String[] input = br.readLine().split(" ");
-            int in = Integer.parseInt(input[0]);
-            int out = Integer.parseInt(input[1]);
-            for (int j = in; j < out; j++) {
-                cnt[j]++;
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            for (int j = start; j < end; j++) {
+                times[j]++;
             }
+            min = Math.min(min, start);
+            max = Math.max(max, end);
         }
 
-        int ans = 0;
-        for (int i = 1; i < 101; i++) {
-            if (cnt[i] != 0) {
-                if (cnt[i] == 1) ans += a;
-                else if (cnt[i] == 2) ans += b * 2;
-                else if (cnt[i] == 3) ans += c * 3;
+        // 차량의 수 별로 요금을 계산
+        for (int i = min; i < max; i++) {
+            if (times[i] == 1) {
+                ans += a;
+            } else if (times[i] == 2) {
+                ans += 2 * b;
+            } else if (times[i] == 3){
+                ans += 3 * c;
             }
         }
 
         System.out.println(ans);
     }
 }
-
