@@ -1,29 +1,22 @@
-import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        // input을 String 타입으로 입력받기
-        String input = sc.nextLine();
-
-        // 크기가 26인 int 배열을 선언(알파벳의 순서)
+    public static void main(String[] args) throws IOException {
+        // 알파벳의 개수를 저장할 배열 선언
         int[] alpha = new int[26];
 
-        // 알파벳을 하나씩 순회하면서 알파벳의 위치에 해당하는 값을 1씩 증가시킨다.
-        for (char c : input.toCharArray()) {
+        // 단어 입력으로 받기
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        char[] str = br.readLine().toCharArray();
+
+        // 단어 하나씩 키워카면서 인덱스 저장
+        for (char c : str) {
             alpha[c - 'a']++;
         }
-
-        // 한 줄에 출력하기
-        for (int i = 0; i < alpha.length; i++) {
-            if (i == 25) {
-                System.out.print(alpha[i]);
-            } else {
-                System.out.print(alpha[i] + " ");
-            }
+        
+        // 출력
+        for(int i = 0; i < 26; i++) {
+            System.out.print(alpha[i] + " ");
         }
-
-        sc.close();
     }
 }
