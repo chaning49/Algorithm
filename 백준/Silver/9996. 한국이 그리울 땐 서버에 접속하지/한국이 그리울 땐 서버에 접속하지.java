@@ -1,39 +1,29 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        /*
-        * boj 9996 한국이 그리울 땐 서버에 접속하지
-        * 패턴: 알파벳 소문자 여러개 + *
-        * 패턴과 파일 이름이 주어지고 각각의 파일 이름이 패턴과 일치하는지 알아보자
-        * 입력: n(1 <= n <= 100), pattern(알파벳 소문자 + *(아스키값 42), 길이는 100이하, 별표는 문자열의 처음, 끝 불가), fileNames
-        * 출력: 파일 이름에 따라 패턴과 일치하면 DA, 아니면 NE
-        * */
+        // 입력 받기
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
+
+        // 특수문자 *을 기준으로 앞의 패턴과 뒤의 패턴을 저장
         String pattern = br.readLine();
+        int starIdx = pattern.indexOf('*');
+        String pre = pattern.substring(0, starIdx);
+        String suf = pattern.substring(starIdx + 1);
 
-        // pattern의 시작, 끝 문자열을 저장
-        int star = pattern.indexOf("*");
-        String pre = pattern.substring(0, star);
-        String suf = pattern.substring(star + 1);
-
-        StringBuilder sb = new StringBuilder();
+        // 입력된 문자열이 패턴과 일치하는지 확인
         for (int i = 0; i < n; i++) {
-            String str = br.readLine();
-            if (pre.length() + suf.length() > str.length()) { // 반례: ab인 경우까지 고려해야 한다.
-                sb.append("NE").append("\n");
-            } else {
-                if (pre.equals(str.substring(0, pre.length())) && suf.equals(str.substring(str.length() - suf.length()))) {
-                    sb.append("DA").append("\n");
-                } else {
-                    sb.append("NE").append("\n");
-                }
-            }
-        }
+            String fileName = br.readLine();
+            boolean hasPattern = true;
+            
+            // 파일 이름이 패턴 길이의 합보다 작으면 매칭 불가능
+            if (fileName.length() < pre.length() + suf.length()) hasPattern = false;
+            if (!fileName.startsWith(pre)) hasPattern = false;
+            if (!fileName.endsWith(suf)) hasPattern = false;
 
-        System.out.print(sb);
+            System.out.println(hasPattern ? "DA" : "NE");
+        }
     }
 }
