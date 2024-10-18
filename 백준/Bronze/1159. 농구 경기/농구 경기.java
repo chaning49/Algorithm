@@ -1,33 +1,26 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        /*
-        * 입력 선수의 수 n은 1부터 150까지, n개의 줄에는 선수의 성이 주어진다.(알파벳 소문자)
-        * */
+        // 선수의 알파벳 별 인원 수를 저장할 알파벳 배열 선언
+        int[] alpha = new int[26];
+
+        // 입력 받기
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
 
-        // 알파벳 개수 저장
-        int[] alpha = new int[26];
-
         for (int i = 0; i < n; i++) {
-            char c = br.readLine().charAt(0);
-            alpha[c - 'a']++;
+            int a = br.readLine().charAt(0) - 'a';
+            alpha[a]++;
         }
 
+        // 5명인 경우의 알파벳을 오름차순으로 이어붙인다.
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < alpha.length; i++) {
-            if (alpha[i] >= 5) {
-                char c = (char) ('a' + i);
-                sb.append(c);
-            }
+        for (int i = 0; i < 26; i++) {
+            if (alpha[i] >= 5) sb.append(Character.toChars('a' + i));
         }
 
-        System.out.println(sb.length() == 0 ? "PREDAJA" : sb);
+        System.out.println(sb.length() > 0 ? sb.toString() : "PREDAJA");
     }
 }
