@@ -1,30 +1,23 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        /*
-        * 입력은 소문자, 길이는 1 이상 100 이하
-        * 출력은 팰린드롬이면 1, 아니면 0
-        * 어느 방향에서 읽어도 같은 순서인 단어를 팰린드롬이라고 한다.
-        * */
+        // 입력 받기
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String word = br.readLine();
+        char[] word = br.readLine().toCharArray();
 
+        // 양쪽에서 문자가 같은지 확인한다.
         int start = 0;
-        int end = word.length() - 1;
+        int end = word.length - 1;
         while (start < end) {
-            if (word.charAt(start) == word.charAt(end)) {
-                start++;
-                end--;
-            } else {
+            if (word[start] != word[end]) {
                 System.out.println(0);
                 return;
             }
+            start++;
+            end--;
         }
-
         System.out.println(1);
     }
 }
-
