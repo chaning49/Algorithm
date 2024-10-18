@@ -17,9 +17,11 @@ public class Main {
         for (int i = 0; i < n; i++) {
             String fileName = br.readLine();
             boolean hasPattern = true;
-            
+
             // 파일 이름이 패턴 길이의 합보다 작으면 매칭 불가능
             if (fileName.length() < pre.length() + suf.length()) hasPattern = false;
+            
+            // startsWith, endsWith 메서드를 활용할 수도 있다.
             if (!fileName.startsWith(pre)) hasPattern = false;
             if (!fileName.endsWith(suf)) hasPattern = false;
 
