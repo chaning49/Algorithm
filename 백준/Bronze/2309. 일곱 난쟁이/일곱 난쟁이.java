@@ -1,32 +1,44 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int sum = 0;
+    public static void main(String[] args) throws IOException {
+        // 입력 받으면서 총합 구하기
+        int[] dwarf = new int[9];
+        int target = 0;
 
-        // 숫자 입력 받기
-        int[] hobits = new int[9];
-        for (int i = 0; i < 9; i++) {
-            hobits[i] = sc.nextInt();
-            sum += hobits[i];
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        for (int i = 0; i < dwarf.length; i++) {
+            dwarf[i] = Integer.parseInt(br.readLine());
+            target += dwarf[i];
         }
 
-        // 오름차순 정렬
-        Arrays.sort(hobits);
+        // 목표값
+        target -= 100;
 
-        // 왼쪽부터 두 개씩 골라 sum에서 빼준다.
-        for (int i = 0; i < 9; i++) {
-            for (int j = i + 1;  j < 9; j++) {
-                if (sum - hobits[i] - hobits[j] == 100) {
-                    for (int h : hobits) {
-                        if (h != hobits[i] && h != hobits[j]) {
-                            System.out.println(h);
-                        }
-                    }
-                    return;
+        // 오름차순 정렬
+        Arrays.sort(dwarf);
+
+        int[] idx = new int[2];
+
+        // 앞에서부터 target을 찾기
+        for (int i = 0; i < dwarf.length - 1; i++) {
+            int sum = dwarf[i];
+            for (int j = i + 1; j < dwarf.length; j++) {
+                sum += dwarf[j];
+                if (sum == target) {
+                    idx[0] = i;
+                    idx[1] = j;
+                } else {
+                    sum -= dwarf[j];
                 }
             }
+        }
+
+        // 출력하기
+        for (int i = 0; i < dwarf.length; i++) {
+            if (i == idx[0] || i == idx[1]) continue;
+            System.out.println(dwarf[i]);
         }
     }
 }
