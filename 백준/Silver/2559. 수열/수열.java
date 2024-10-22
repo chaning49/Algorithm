@@ -10,21 +10,21 @@ public class Main {
         // n과 k를 저장하고, 크기가 n인 배열 생성
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
-        int[] arr = new int[n];
 
-        // 수열 입력받기
+        // 구간합을 저장할 배열
+        // 입력된 배열의 크기가 n일 때, n + 1 크기의 구간합 배열을 선언하여 구간합을 저장해준다.
+        int[] psum = new int[n + 1];
         st = new StringTokenizer(br.readLine());
-        int sum = 0;
-        for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
-            if (i < k) sum += arr[i]; // 배열에서 k개의 합을 우선 구하기
+
+        // 구간합 구하기
+        for (int i = 1; i <= n; i++) {
+            psum[i] = psum[i - 1] + Integer.parseInt(st.nextToken());
         }
 
-        // 미리 더한 값에서 한 칸씩 이동하면서 최대값을 찾기
-        int max = sum;
-        for (int i = 0; i < n - k; i++) {
-            sum = sum - arr[i] + arr[i + k];
-            max = Math.max(max, sum);
+        // k개의 값의 합 중에서 최대인 것만 저장하기
+        int max = -10000009;
+        for (int i = k; i <= n; i++) {
+            max = Math.max(max, psum[i] - psum[i - k]);
         }
 
         System.out.println(max);
