@@ -1,47 +1,42 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        /*
-        * boj 1213 팰린드롬 만들기
-        * 입력: 알파벳 대문자 최대 50자
-        * 출력: 팰린드롬 or I'm sorry Hansoo
-        * 1. 알파벳이 홀수개가 되려면 하나만 있어야 한다. 또한 홀수개가 있는 알파벳이 가운데로 오도록 해야 한다.
-        * 2. 알파벳의 뒷 순서부터 양쪽으로 이어붙여야 한다.
-        * */
+        // 입력 받기
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String name = br.readLine();
+        char[] input = br.readLine().toCharArray();
 
-        // 알파벳 직접 저장
-        int[] alpha = new int[300];
-        for (char c : name.toCharArray()) {
-            alpha[c]++;
+        // 포함된 알파벳의 개수 세기
+        int[] alpha = new int[26];
+        for (char ch : input) {
+            alpha[ch - 'A']++;
         }
 
+        // 알파벳의 개수가 홀수인 알파벳이 2개 이상이면 팰린드롬 불가능
+        int checkPal = 0;
+        int midNum = -1;
         StringBuilder sb = new StringBuilder();
-        char mid = '0';
-        int oddCheck = 0;
-
-        // 알파벳이 홀수개인 경우가 2개 이상이면 팰린드롬이 될 수 없다.
-        for (int i = 'Z'; i >= 'A'; i--) {
-            if (alpha[i] != 0) {
-                if (alpha[i] % 2 == 1) { // 가운데 값이 존재하는 것이므로 mid에 알파벳 저장, oddCheck 증가, 알파벳 개수 차감
-                    mid = (char) i;
-                    oddCheck++;
-                    alpha[i]--;
-                }
-                if (oddCheck == 2) break;
-                for (int j = 0; j < alpha[i]; j += 2) { // 앞 뒤로 이어붙이기
-                    sb.insert(0, (char) i);
-                    sb.append((char) i);
-                }
+        for (int i = 0; i < 26; i++) {
+            if (alpha[i] % 2 == 1) {
+                checkPal++;
+                midNum = i;
+            }
+            if (checkPal == 2) break;
+            for (int j = 0; j < alpha[i] / 2; j++) {
+                sb.append((char) ('A' + i));
             }
         }
 
-        if (oddCheck == 1) sb.insert(sb.length() / 2, mid); // 가운데에 집어넣기
-        if (oddCheck == 2) System.out.println("I'm Sorry Hansoo");
-        else System.out.println(sb);
+        // 거꾸로 붙이기
+        StringBuilder sbRev = new StringBuilder();
+        for (int i = sb.length() - 1; i >= 0; i--) {
+            sbRev.append(sb.charAt(i));
+        }
+
+        // checkPal의 값에 따라 가운데 값을 이어붙이거나, Sorry 등 출력값 반환
+        if (checkPal == 1) sb.append((char) ('A' + midNum));
+        if (checkPal == 2) System.out.println("I'm Sorry Hansoo");
+        else System.out.println(sb.append(sbRev));
     }
 }
