@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
         /*
-        * boj 1213 팰린드롬 만들기
+        * boj 1940 주몽
         * 입력: 재료의 개수 n, 갑옷을 만드는 데 필요한 수 m, n개의 재료들
         * 출력: 만들 수 있는 갑옷의 개수
         * n이 최대 15,000이기 때문에 O(N^2)은 불가
